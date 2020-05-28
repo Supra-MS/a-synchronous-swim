@@ -23,6 +23,35 @@ describe('server responses', () => {
 
   it('should respond to a GET request for a swim command', (done) => {
     // write your test here
+
+    let {req, res} = server.mock('/', 'GET');
+    // console.log(req,res);
+    let swimCommands = ['up', 'down', 'left', 'right'];
+    httpHandler.router(req, res);
+    // console.log(req,res);
+
+
+    expect(res._responseCode).to.equal(200);
+    expect(res._ended).to.equal(true);
+    expect(res._data.toString()).to.be.oneOf(swimCommands);
+    console.log(res._data.toString());
+
+    done();
+  });
+
+  it('should respond to a GET request for a index.html page', (done) => {
+
+    let {req, res} = server.mock('/index.html', 'GET');
+    // console.log(req,res);
+    httpHandler.router(req, res);
+    console.log(req,res);
+
+
+    expect(res._responseCode).to.equal(200);
+    expect(res._ended).to.equal(true);
+    expect(res._data.toString()).to.be.equal('Welcome to Home Page!');
+    console.log(res._data.toString());
+
     done();
   });
 

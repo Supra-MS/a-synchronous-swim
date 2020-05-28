@@ -12,9 +12,35 @@ module.exports.initialize = (queue) => {
   messageQueue = queue;
 };
 
+let randomCommandGenerator = function(){
+  const swimCommands = ['up', 'down', 'left', 'right'];
+  let randomIndex = Math.floor(Math.random() * swimCommands.length );
+  return swimCommands[randomIndex];
+}
+
 module.exports.router = (req, res, next = ()=>{}) => {
   console.log('Serving request type ' + req.method + ' for url ' + req.url);
-  res.writeHead(200, headers);
-  res.end();
-  next(); // invoke next() at the end of a request to help with testing!
+  if(req.method === 'GET'){
+    if(req.url === '/index.html'){
+      res.writeHead(200, headers);
+      // res.
+      // res.write(randomCommandGenerator());
+      res.end('Welcome to Home Page!');
+    }else{
+      res.writeHead(200, headers);
+      res.write(randomCommandGenerator());
+      res.end();
+    }
+
+  }
+  if(req.method === 'OPTIONS'){
+    res.writeHead(200, headers);
+    // res.write('up');
+    res.end();
+  }
+  next();
 };
+
+// res.writeHead(200, headers);
+// res.end();
+// next(); // invoke next() at the end of a request to help with testing!

@@ -39,9 +39,9 @@ describe('server responses', () => {
     done();
   });
 
-  it('should respond to a GET request for a index.html page', (done) => {
+  it('should respond to a GET request for a index page', (done) => {
 
-    let {req, res} = server.mock('/index.html', 'GET');
+    let {req, res} = server.mock('/index', 'GET');
     // console.log(req,res);
     httpHandler.router(req, res);
     console.log(req,res);

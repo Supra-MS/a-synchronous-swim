@@ -20,22 +20,31 @@ let randomCommandGenerator = function(){
 
 module.exports.router = (req, res, next = ()=>{}) => {
   console.log('Serving request type ' + req.method + ' for url ' + req.url);
-  if(req.method === 'GET'){
-    if(req.url === '/index.html'){
-      res.writeHead(200, headers);
-      // res.
-      // res.write(randomCommandGenerator());
-      res.end('Welcome to Home Page!');
-    }else{
-      res.writeHead(200, headers);
-      res.write(randomCommandGenerator());
-      res.end();
+
+  if (req.method === 'GET') {
+    /* console.log('outside / switch');
+    if (req.url === '/'){
+      console.log('inside switch');
+    } */
+    switch (req.url) {
+      case '/':
+        console.log('inside switch')
+        res.writeHead(200, headers);
+        // res.write(randomCommandGenerator());
+        res.end(randomCommandGenerator());
+        break;
+      case '/index':
+        console.log('inside switch index.html')
+        res.writeHead(200, headers); // {'Content-Type': 'application/json'}
+        res.end('Welcome to Home Page!');
+        break;
     }
 
   }
-  if(req.method === 'OPTIONS'){
+
+  if (req.method === 'OPTIONS') {
     res.writeHead(200, headers);
-    // res.write('up');
+    // res.write('options');
     res.end();
   }
   next();
@@ -44,3 +53,17 @@ module.exports.router = (req, res, next = ()=>{}) => {
 // res.writeHead(200, headers);
 // res.end();
 // next(); // invoke next() at the end of a request to help with testing!
+
+// if (req.url === '/index.html') {
+//   res.writeHead(200, headers); // {'Content-Type': 'application/json'}
+//   res.end('Welcome to Home Page!');
+// } else {
+//   res.writeHead(200, headers);
+//   res.write(randomCommandGenerator());
+//   res.end();
+
+// console.log('outside / switch');
+//     if (req.url === '/'){
+//       console.log('inside switch');
+//     }
+// }

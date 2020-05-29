@@ -1,4 +1,4 @@
-(function() {
+(function () {
 
   const serverUrl = 'http://127.0.0.1:3000';
 
@@ -7,25 +7,51 @@
   //
 
   const ajaxFetchSwimCommand = () => {
+    console.log('inside ajax fetch swim comm');
     $.ajax({
       type: 'GET',
       url: serverUrl,
-      cache: false,
-      contentType: false,
-      processData: false,
       success: (data) => {
         console.log('Success: ', data);
         SwimTeam.move(data);
 
-        setInterval( () => {
+        /* setInterval( () => {
           ajaxFetchSwimCommand();
-        }, 2000);
+        }, 1000); */
 
+      },
+      error: (error) => {
+        console.log('Fail: ', error);
       }
     });
   };
 
-  ajaxFetchSwimCommand();
+
+
+  $('body').on('keydown', (event) => {
+    var arrowPress = event.key.match(/Arrow(Up|Down|Left|Right)/);
+    console.log(event.key);
+    if (arrowPress) {
+      console.log('inside ajax click ')
+      ajaxFetchSwimCommand();
+    }
+    // ajaxFetchSwimCommand();
+  });
+
+// not to use dot
+    const ajaxFetchHomePage = () => {
+      $.ajax({
+        type: 'GET',
+        url: `${serverUrl}/index`,
+
+        success: (data) => {
+          console.log('Success: ', data);
+
+        }
+      });
+    };
+    ajaxFetchHomePage();
+
 
 
 
@@ -51,7 +77,7 @@
     });
   };
 
-  $('form').on('submit', function(e) {
+  $('form').on('submit', function (e) {
     e.preventDefault();
 
     var form = $('form .file')[0];
@@ -70,3 +96,18 @@
   });
 
 })();
+
+
+
+
+/*
+client
+  keypressHendelers (keypressDown => Swim.move(direction))
+  keypressHendelers (keypressDown => serverGETrequset(req.direction, reqId)(enqueue(reqId))-->once we get responce will deque --> Swim.move(res.direction))
+server
+
+
+
+
+
+*/

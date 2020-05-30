@@ -4,7 +4,11 @@ const headers = require('./cors');
 const multipart = require('./multipartUtils');
 
 // Path for the background image ///////////////////////
-module.exports.backgroundImageFile = path.join('.', 'background.jpg');
+// module.exports.backgroundImageFile = path.join('.', 'background.jpg');
+module.exports.backgroundImageFile = path.join(__dirname, '../spec/water-lg.jpg');
+console.log('line 8 --> ',path.join('.', 'background.jpg'));
+console.log('line 9 --> ',path.join(__dirname, '../spec/water-lg.jpg'));
+
 ////////////////////////////////////////////////////////
 
 let messageQueue = null;
@@ -25,11 +29,24 @@ module.exports.router = (req, res, next = ()=>{}) => {
   console.log('Serving request type ' + req.method + ' for url ' + req.url);
 
   if (req.method === 'GET') {
-    /* console.log('outside / switch');
-    if (req.url === '/'){
-      console.log('inside switch');
-    } */
     switch (req.url) {
+      case '/background.jpg':
+          console.log('outside read ', this.backgroundImageFile);
+          fs.readFile(this.backgroundImageFile, ( error, data) =>{
+            console.log('inside FS read ', this.backgroundImageFile);
+
+            if(error){
+              console.log('Error: ', error);
+              res.writeHead(404, headers);
+              res.end(JSON.stringify(error));
+            }else{
+              res.writeHead(200, headers);
+              res.end(data);
+            }
+            next();
+          });
+        break;
+
       case '/':
         if(messageQueue !== null){
           let responceString = messageQueue.dequeue();
@@ -37,14 +54,15 @@ module.exports.router = (req, res, next = ()=>{}) => {
           res.end(responceString);
           messageQueue.enqueue(randomCommandGenerator());
         }
-
         break;
+
       case '/randomCommand':
         console.log('inside switch')
         res.writeHead(200, headers);
         // res.write(randomCommandGenerator());
         res.end(randomCommandGenerator());
         break;
+
       case '/index':
         console.log('inside switch index.html')
         res.writeHead(200, headers); // {'Content-Type': 'application/json'}
@@ -58,8 +76,8 @@ module.exports.router = (req, res, next = ()=>{}) => {
     res.writeHead(200, headers);
     // res.write('options');
     res.end();
+    next();
   }
-  next();
 };
 
 // res.writeHead(200, headers);

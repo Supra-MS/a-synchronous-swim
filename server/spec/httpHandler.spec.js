@@ -24,7 +24,7 @@ describe('server responses', () => {
   it('should respond to a GET request for a swim command', (done) => {
     // write your test here
 
-    let {req, res} = server.mock('/', 'GET');
+    let {req, res} = server.mock('/randomCommand', 'GET');
     // console.log(req,res);
     let swimCommands = ['up', 'down', 'left', 'right'];
     httpHandler.router(req, res);

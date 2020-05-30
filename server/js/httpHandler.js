@@ -9,7 +9,10 @@ module.exports.backgroundImageFile = path.join('.', 'background.jpg');
 
 let messageQueue = null;
 module.exports.initialize = (queue) => {
+
   messageQueue = queue;
+  console.log('inside httpHandler ---> ',messageQueue);
+  messageQueue.enqueue(randomCommandGenerator());
 };
 
 let randomCommandGenerator = function(){
@@ -28,6 +31,15 @@ module.exports.router = (req, res, next = ()=>{}) => {
     } */
     switch (req.url) {
       case '/':
+        if(messageQueue !== null){
+          let responceString = messageQueue.dequeue();
+          res.writeHead(200, headers);
+          res.end(responceString);
+          messageQueue.enqueue(randomCommandGenerator());
+        }
+
+        break;
+      case '/randomCommand':
         console.log('inside switch')
         res.writeHead(200, headers);
         // res.write(randomCommandGenerator());

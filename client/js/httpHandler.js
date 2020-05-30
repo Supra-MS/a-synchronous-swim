@@ -15,9 +15,9 @@
         console.log('Success: ', data);
         SwimTeam.move(data);
 
-        /* setInterval( () => {
-          ajaxFetchSwimCommand();
-        }, 1000); */
+      //  setTimeout( () => {
+      //     ajaxFetchSwimCommand();
+      //   }, 4000);
 
       },
       error: (error) => {
@@ -26,7 +26,7 @@
     });
   };
 
-
+  // ajaxFetchSwimCommand();
 
   $('body').on('keydown', (event) => {
     var arrowPress = event.key.match(/Arrow(Up|Down|Left|Right)/);

@@ -1,7 +1,7 @@
 (function () {
 
   const serverUrl = 'http://127.0.0.1:3000';
-
+  const Jimp = require("jimp")
   //
   // TODO: build the swim command fetcher here
   //
@@ -15,9 +15,9 @@
         console.log('Success: ', data);
         SwimTeam.move(data);
 
-      //  setTimeout( () => {
-      //     ajaxFetchSwimCommand();
-      //   }, 4000);
+        //  setTimeout( () => {
+        //     ajaxFetchSwimCommand();
+        //   }, 4000);
 
       },
       error: (error) => {
@@ -26,8 +26,6 @@
     });
   };
 
-  // ajaxFetchSwimCommand();
-
   $('body').on('keydown', (event) => {
     var arrowPress = event.key.match(/Arrow(Up|Down|Left|Right)/);
     console.log(event.key);
@@ -35,22 +33,21 @@
       console.log('inside ajax click ')
       ajaxFetchSwimCommand();
     }
-    // ajaxFetchSwimCommand();
   });
 
-// not to use dot
-    const ajaxFetchHomePage = () => {
-      $.ajax({
-        type: 'GET',
-        url: `${serverUrl}/index`,
+  // not to use dot
+  const ajaxFetchHomePage = () => {
+    $.ajax({
+      type: 'GET',
+      url: `${serverUrl}/index`,
 
-        success: (data) => {
-          console.log('Success: ', data);
+      success: (data) => {
+        console.log('Success: ', data);
 
-        }
-      });
-    };
-    ajaxFetchHomePage();
+      }
+    });
+  };
+  ajaxFetchHomePage();
 
 
 
@@ -61,6 +58,19 @@
   /////////////////////////////////////////////////////////////////////
 
   const ajaxFileUplaod = (file) => {
+
+
+
+    Jimp.read("image.jpg", function (err, image) {
+      if (err) {
+        console.log(err)
+      } else {
+        image.write("new-image.png")
+      }
+    })
+
+
+    console.log('client file ', file);
     var formData = new FormData();
     formData.append('file', file);
     $.ajax({
@@ -87,8 +97,11 @@
     }
 
     var file = form.files[0];
-    if (file.type !== 'image/jpeg') {
-      console.log('Not a jpg file!');
+    console.log('file type ', file.type);
+    let fType = 'image/jpg'.match(/image\/(jpg|jpeg|png)/);
+
+    if (fType === null) {
+      console.log('Not a proper image file!');
       return;
     }
 
@@ -97,17 +110,3 @@
 
 })();
 
-
-
-
-/*
-client
-  keypressHendelers (keypressDown => Swim.move(direction))
-  keypressHendelers (keypressDown => serverGETrequset(req.direction, reqId)(enqueue(reqId))-->once we get responce will deque --> Swim.move(res.direction))
-server
-
-
-
-
-
-*/

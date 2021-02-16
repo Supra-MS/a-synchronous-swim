@@ -3,7 +3,6 @@ var parser = require('parse-multipart');
 module.exports.getBoundary = function(buffer) {
   var finder = /--(----\w+)\b/;
   var boundary = buffer.toString().match(finder);
-  // console.log(boundary[1]);
   return boundary ? boundary[1] : null;
 };
 
@@ -22,3 +21,4 @@ module.exports.getFile = function(buffer) {
   }
   return null;
 };
+
